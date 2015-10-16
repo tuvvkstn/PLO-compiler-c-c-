@@ -1,12 +1,11 @@
+program hello;
+CONST a = 10;
 VAR x, squ;
-PROCEDURE square;
+procedure f (var a; b);
+BEGIN
+a := 10;
+END;
+
 BEGIN
    squ:= x * x
-END;
-BEGIN
-   x := 1;
-   WHILE x <= 10 DO
-   BEGIN
-   x := x - 1;
-   END
 END.

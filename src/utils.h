@@ -117,15 +117,14 @@ TokenType getTokenType(const char* string_1){
 		return ELSE;
 	return NONE;
 }
-
-void error(const char*); //display an error message
-void factor();
-void term();
+void error_display(const char *); //display an error message
+void program();
+void block();
+void statement();
 void expression();
 void condition();
-void statement();
-void block();
-void program();
+void term();
+void factor();
 
 
 #endif /* UTILS_H_ */
