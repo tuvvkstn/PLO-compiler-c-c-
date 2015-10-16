@@ -11,11 +11,11 @@
 
 
 TokenType token;
-int line_num = 1;
+int line_num = 0;
 int num;
 char ident[MAX_IDENT_LEN + 1];
 char ch;
-char filename[30]=  "inputFile/prog1.PL0";
+char filename[30] ;//=  "inputFile/prog1.PL0";
 int i;
 FILE* reader;
 void open(char* filename){
@@ -231,8 +231,11 @@ TokenType getToken(){
 }
 
 int main(int argc, char *argv[]){
-//	printf("Enter filename: ");
-//	scanf("%s", filename);
+	if(argc < 2){
+		printf("USAGE: PL0_COMPILE filename\n");
+		exit(1);
+	}
+	strcpy(filename, argv[1]);
 	open(filename);
 	ch = ' ';
 	token = getToken();
@@ -383,26 +386,33 @@ void block(){
 		}
 		break;
 	case BEGIN:
+		printf("in block -> BEGIN.\n");
 		token = getToken();
 		statement();
+
 		while(token == SEMICOLON){
 			token = getToken();
 			statement();
 		}
+		printf("out of while.\n");
 		if(token == END){
+			printf("here.\n");
 			token = getToken();
 		}
 		else{
 			error_display("[in block -> BEGIN] Thieu END.\n");
 		}
 		break;
+
 	default:
 		error_display("[in block] Block begin error.\n");
+		break;
 	}//end switch case
 
 	return ;
 }
 void statement(){
+//	printf("call statement, token = %s.\n", ident);
 	switch (token) {
 		case IDENT:
 			token = getToken();
@@ -519,6 +529,7 @@ void statement(){
 	return ;
 }
 void condition(){
+//	printf("call condition.\n");
 	if(token == ODD){
 		token = getToken();
 		expression();
@@ -535,6 +546,7 @@ void condition(){
 	return;
 }
 void expression(){
+//	printf("call expression.\n");
 	if(token == PLUS || token == MINUS){
 		token = getToken();
 	}
@@ -545,6 +557,7 @@ void expression(){
 	return ;
 }
 void term(){
+//	printf("call term.\n");
 	factor();
 	while(token == TIMES || token == PERCENT || token == SLASH){
 		token = getToken();
@@ -553,6 +566,7 @@ void term(){
 	return;
 }
 void factor(){
+//	printf("call factor.\n");
 	switch (token) {
 		case IDENT:
 			token = getToken();
@@ -588,7 +602,7 @@ void factor(){
 }
 void error_display(const char* err_msg){
 	printf("Line number %d, %s",line_num, err_msg);
-//	close(filename);
-//	exit(-1);
+	close(filename);
+	exit(-1);
 	return;
 }
