@@ -1,0 +1,13 @@
+program Example2;
+Begin
+a[2] := 10;
+call gcd(2,3);
+b := 10;
+for x := 10 to 5 do y := 2;
+if x = 2 then 
+begin
+y := 4;
+while x <> 2 do
+x := x + y
+end
+End.
