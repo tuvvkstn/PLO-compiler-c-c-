@@ -7,8 +7,8 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 #define MAX_IDENT_LEN 30
-#define NUM_KEYWORD 15
-#define NUM_TOKENTYPE 37
+#define NUM_KEYWORD 17
+#define NUM_TOKENTYPE 41
 
 #include <string.h>
 #include <stdio.h>
@@ -17,16 +17,17 @@ enum TokenType { NONE = 0, IDENT, NUMBER,
 				ODD, PROCEDURE, PROGRAM, THEN, TO, VAR, WHILE,
 				PLUS, MINUS, TIMES, SLASH, EQU, NEQ, LSS, LEQ,
 				GTR, GEQ, LPARENT, RPARENT, LBRACK, RBRACK,
-				PERIOD, COMMA, SEMICOLON, ASSIGN, PERCENT,  };
+				PERIOD, COMMA, SEMICOLON, ASSIGN, PERCENT, HOICHAM, HAICHAM, REPEAT, UNTIL  };
 
 const char* tokenTypeChar [NUM_TOKENTYPE] = {"NONE", "IDENT", "NUMBER",
 											"BEGIN", "CALL", "CONST", "DO", "ELSE", "END", "FOR", "IF",
 											"ODD", "PROCEDURE", "PROGRAM", "THEN", "TO", "VAR", "WHILE",
 											"PLUS", "MINUS", "TIMES", "SLASH", "EQU", "NEQ", "LSS", "LEQ",
 											"GTR", "GEQ", "LPARENT", "RPARENT", "LBRACK", "RBRACK",
-											"PERIOD", "COMMA", "SEMICOLON", "ASSIGN", "PERCENT"};
+											"PERIOD", "COMMA", "SEMICOLON", "ASSIGN", "PERCENT",
+											"HOICHAM", "HAICHAM", "REPEAT", "UNTIL"};
 const char* keywords[NUM_KEYWORD] = {"begin" , "end", "if", "then", "while", "do", "call", "odd",
-									"to", "const", "var","procedure", "program", "else", "for"};
+									"to", "const", "var","procedure", "program", "else", "for", "repeat", "until"};
 
 int isLetter(char ch){
 	if((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
@@ -115,6 +116,10 @@ TokenType getTokenType(const char* string_1){
 		return FOR;
 	if(strcmp(string, "else") == 0)
 		return ELSE;
+	if(strcmp(string, "repeat") == 0)
+		return REPEAT;
+	if(strcmp(string, "until") == 0)
+		return UNTIL;
 	return NONE;
 }
 void error_display(const char *); //display an error message

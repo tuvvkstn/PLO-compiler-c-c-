@@ -223,8 +223,22 @@ TokenType getToken(){
 			printf("%s - %s\n", ident, tokenTypeChar[ASSIGN]);
 			return ASSIGN;
 		}
+		else {
+			ident[0] = ':';
+			ident[1] = '\0';
+			printf("%s - %s\n", ident, tokenTypeChar[HAICHAM]);
+			return HAICHAM;
+
+		}
 		printf("%s - %s\n", ident, tokenTypeChar[NONE]);
 		return NONE;
+	}
+	if(ch == '?'){
+		ch = getCHAR();
+		ident[0] = '?';
+		ident[1] = '\0';
+		printf("%s - %s\n", ident, tokenTypeChar[HOICHAM]);
+		return HOICHAM;
 	}
 	printf("%s - %s\n", ident, tokenTypeChar[NONE]);
 	return NONE;
@@ -425,6 +439,25 @@ void statement(){
 			if(token == ASSIGN){
 				token = getToken();
 				expression();
+				if(token == EQU || token == GTR || token == GEQ
+						|| token == LSS || token == LEQ || token == NEQ){
+					token = getToken();
+					expression();
+					if(token == HOICHAM){
+						token = getToken();
+						expression();
+						if(token == HAICHAM){
+							token = getToken();
+							expression();
+						}
+						else{
+							error_display("[in statement -> IDENT] Bieu thuc gan sai.\n");
+						}
+					}
+					else{
+						error_display("[in statement -> IDENT] Bieu thuc gan sai.\n");
+					}
+				}
 			}
 			else {
 				error_display("[in statement -> IDENT] Thieu dau gan.\n");
@@ -514,8 +547,84 @@ void statement(){
 					error_display("[in statement -> FOR] Thieu phep gan.\n");
 				}
 			}
+			else if (token == LPARENT){
+				token = getToken();
+				if(token == IDENT){
+					token = getToken();
+					if(token == ASSIGN){
+						token = getToken();
+						expression();
+						if(token == SEMICOLON){
+							token = getToken();
+							condition();
+							if(token == SEMICOLON){
+								token = getToken();
+								if(token == IDENT){
+									token = getToken();
+									if(token == ASSIGN){
+										token = getToken();
+										expression();
+										if(token == RPARENT){
+											token = getToken();
+											statement();
+										}
+										else{
+											error_display("[in stament -> FOR 2] Bieu thuc sai.\n");
+										}
+									}
+									else{
+										error_display("[in stament -> FOR 2] Bieu thuc sai.\n");
+									}
+								}
+								else{
+									error_display("[in stament -> FOR 2] Bieu thuc sai.\n");
+								}
+							}
+							else{
+								error_display("[in stament -> FOR 2] Bieu thuc sai.\n");
+							}
+						}
+						else {
+							error_display("[in stament -> FOR 2] Bieu thuc sai.\n");
+						}
+					}
+					else{
+						error_display("[in statement -> FOR 2] Thieu phep gan.\n");
+					}
+				}
+				else {
+					error_display("[instatement -> FOR 2] Thieu ten bien.\n");
+				}
+			}
 			else{
 				error_display("[in statement -> FOR] Thieu ten bien.\n");
+			}
+			break;
+		case REPEAT:
+			if(token == BEGIN){
+				token = getToken();
+				statement();
+				while(token == SEMICOLON){
+					token = getToken();
+					statement();
+				}
+				if(token == END){
+					token = getToken();
+				}
+				else {
+					error_display("[in statement -> REPEAT] Thieu END.\n");
+				}
+			}
+			else {
+				token = getToken();
+				statement();
+			}
+			if(token == UNTIL){
+				token = getToken();
+				condition();
+			}
+			else {
+				error_display("[in statement -> REPEAT] Thieu tu khoa UNTIL.\n");
 			}
 			break;
 		default:
